@@ -1,0 +1,17 @@
+version: 2.1
+
+jobs:
+  lint-backend:
+    docker:
+      - image: python:3.7.3-stretch
+    steps:
+      - checkout
+      - run:
+          name: Back-end lint
+          command: |
+            make
+
+workflows:
+  default:
+    jobs:
+      - lint-backend
