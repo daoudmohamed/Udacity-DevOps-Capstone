@@ -7,7 +7,7 @@ COPY app .
 RUN pip install -r requirements.txt 
 
 ARG FLASK_APP=app.py
-ARG BUILD_VERSION=1.0
+ARG BUILD_VERSION=$CIRCLE_BUILD_NUM
 
 Expose 5000
 

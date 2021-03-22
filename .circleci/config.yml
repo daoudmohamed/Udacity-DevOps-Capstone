@@ -10,8 +10,20 @@ jobs:
           name: Back-end lint
           command: |
             make
+            
+  build-image:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: build-image
+          command: |
+            ./run_docker.sh
 
 workflows:
   default:
     jobs:
       - lint-backend
+      - build-image:
+          requires: [lint-backend]
+       
