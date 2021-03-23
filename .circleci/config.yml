@@ -1,5 +1,13 @@
 version: 2.1
 
+
+executors:
+  docker-publisher:
+    environment:
+      IMAGE_NAME: jonathancardoso/building-on-ci
+    docker:
+      - image: circleci/buildpack-deps:stretch
+      
 jobs:
   lint-backend:
     docker:
@@ -12,13 +20,32 @@ jobs:
             make
             
   build-image:
-    machine: true
+    executor: docker-publisher
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: build-image
           command: |
             ./run_docker.sh
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./image.tar      
+  push-image:
+    executor: docker-publisher
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Load archived Docker image
+          command: docker load -i /tmp/workspace/image.tar
+      - run:
+          name: push-image
+          command: |
+            ./upload_docker.sh
 
 workflows:
   default:
@@ -26,4 +53,6 @@ workflows:
       - lint-backend
       - build-image:
           requires: [lint-backend]
+      - push-image:
+          requires: [build-image]
        
