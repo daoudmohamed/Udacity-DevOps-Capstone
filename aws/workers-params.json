@@ -1,0 +1,34 @@
+[
+	{
+		"ParameterKey": "KeyName",
+		"ParameterValue": "udacity"
+	},
+	{
+		"ParameterKey": "OnDemandBootstrapArguments",
+		"ParameterValue": "--kubelet-extra-args --node-labels=lifecycle=OnDemand"
+	},
+	{
+		"ParameterKey": "NodeImageId",
+		"ParameterValue": "ami-0575fc648136871a1"
+	},
+	{
+		"ParameterKey": "OnDemandNodeInstanceType",
+		"ParameterValue": "t2.medium"
+	},
+	{
+		"ParameterKey": "ClusterName",
+		"ParameterValue": "UdacityCapStone-Cluster"
+	},
+	{
+		"ParameterKey": "ClusterControlPlaneSecurityGroup",
+		"ParameterValue": "sg-0dbe78686def0b6db"
+	},
+	{
+		"ParameterKey": "VpcId",
+		"ParameterValue": "vpc-a5a154cd"
+	},
+	{
+		"ParameterKey": "Subnets",
+		"ParameterValue": "subnet-c50c1cac, subnet-21e9c25a, subnet-386c1075"
+	}
+]

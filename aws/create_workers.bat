@@ -1,0 +1,1 @@
+aws cloudformation create-stack --stack-name UdacityCapStone-workers --template-body file://workers.yml --parameters file://workers-params.json --capabilities CAPABILITY_IAM
