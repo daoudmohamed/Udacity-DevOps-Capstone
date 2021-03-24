@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: capstone-sample-app
+  labels:
+    app: capstone-sample-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: capstone-sample-app
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: capstone-sample-app
+    spec:
+      containers:
+        - image: daoudm/mock-api:c7f048eab2b38771b92c6a1cf56fa0b3a1461026
+          name: capstone-sample-app
+          ports:
+            - containerPort: 80
+              name: http-server
+      imagePullSecrets:
+        - name: ecr-secret

@@ -46,6 +46,19 @@ jobs:
           name: push-image
           command: |
             ./upload_docker.sh
+            
+  K8S-Deploy:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: deploy on k8s
+          command: |
+            aws eks --region eu-west-3 update-kubeconfig --name UdacityCapStone-Cluster
+            kubectl apply -f k8s/deployment.yml
+            kubectl apply -f k8s/service.yml
+            kubectl set image deployments/$PROJECT $PROJECT=$ECRURI:$VERSION
 
 workflows:
   default:
@@ -55,4 +68,6 @@ workflows:
           requires: [lint-backend]
       - push-image:
           requires: [build-image]
+      - K8S-Deploy:
+          requires: [push-image] 
        
