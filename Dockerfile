@@ -1,14 +1,19 @@
-FROM python:3.9 
+FROM python:3.8-slim-buster 
 
-WORKDIR app
+WORKDIR /app
 
 COPY app .
 
 RUN pip install -r requirements.txt 
 
-ARG FLASK_APP=app.py
-ARG BUILD_VERSION=$CIRCLE_BUILD_NUM
+ARG version
+
+ENV BUILD_VERSION=$version
+
+RUN echo $version
+
+RUN echo $CIRCLE_SHA1
 
 Expose 5000
 
-ENTRYPOINT [ flask, run, --host=0.0.0.0 ]
+CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
