@@ -9,7 +9,7 @@
 	},
 	{
 		"ParameterKey": "NodeImageId",
-		"ParameterValue": "ami-0575fc648136871a1"
+		"ParameterValue": "ami-00c7912df575fa47f"
 	},
 	{
 		"ParameterKey": "OnDemandNodeInstanceType",

@@ -20,10 +20,10 @@ spec:
         app: capstone-sample-app
     spec:
       containers:
-        - image: daoudm/mock-api:c7f048eab2b38771b92c6a1cf56fa0b3a1461026
+        - image: daoudm/mock-api:7ed28d503a28acb7722e7517a9ed28ac0536519d
           name: capstone-sample-app
           ports:
-            - containerPort: 80
+            - containerPort: 5000
               name: http-server
       imagePullSecrets:
         - name: ecr-secret

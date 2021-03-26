@@ -1,6 +1,9 @@
 version: 2.1
 
-
+orbs:
+  aws-eks: circleci/aws-eks@0.2.3
+  kubernetes: circleci/kubernetes@0.4.0
+  
 executors:
   docker-publisher:
     environment:
@@ -46,20 +49,33 @@ jobs:
           name: push-image
           command: |
             ./upload_docker.sh
+
             
   K8S-Deploy:
+    executor: aws-eks/python3
+    steps:
+      - checkout
+      - kubernetes/install
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: UdacityCapStone-Cluster
+      - kubernetes/create-or-update-resource:
+          resource-file-path: k8s/deployment.yml
+          resource-name: deployment/capstone-sample-app
+      - kubernetes/create-or-update-resource:
+          resource-file-path: k8s/service.yml
+          resource-name: service/capstone-sample-app
+            
+  verify-deploy:
     docker:
-      - image: amazon/aws-cli
+      - image: python:3.7.3-stretch
     steps:
       - checkout
       - run:
-          name: deploy on k8s
+          name: verify-deploy
           command: |
-            aws eks --region eu-west-3 update-kubeconfig --name UdacityCapStone-Cluster
-            kubectl apply -f k8s/deployment.yml
-            kubectl apply -f k8s/service.yml
-            kubectl set image deployments/$PROJECT $PROJECT=$ECRURI:$VERSION
+             curl a4ad9f157f2284cb89ad592a8a54669d-381491820.eu-west-3.elb.amazonaws.com | grep -q ${CIRCLE_SHA1}
 
+          
 workflows:
   default:
     jobs:
@@ -70,4 +86,12 @@ workflows:
           requires: [build-image]
       - K8S-Deploy:
           requires: [push-image] 
-       
+      - aws-eks/update-container-image:
+          cluster-name: UdacityCapStone-Cluster
+          container-image-updates: "capstone-sample-app=daoudm/mock-api:${CIRCLE_SHA1}"
+          resource-name: deployment/capstone-sample-app
+          record: true
+          requires: [K8S-Deploy] 
+      - verify-deploy:
+          requires: [aws-eks/update-container-image] 
+
