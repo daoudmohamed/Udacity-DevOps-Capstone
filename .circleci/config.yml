@@ -20,7 +20,7 @@ jobs:
       - run:
           name: Back-end lint
           command: |
-            make
+            make all
             
   build-image:
     executor: docker-publisher
