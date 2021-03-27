@@ -53,6 +53,16 @@ Be sure that the kubectl is well configured with the aws cluster, you can do it 
 
 ![Pipeline](https://github.com/daoudmohamed/Udacity-DevOps-Capstone/blob/main/images/pipeline.JPG)
 
+### Lint ok 
+
+![Lint OK](https://github.com/daoudmohamed/Udacity-DevOps-Capstone/blob/main/images/lint-ok.JPG)
+
+### Lint KO
+
+![Lint KO](https://github.com/daoudmohamed/Udacity-DevOps-Capstone/blob/main/images/lint-fail.JPG)
+
+
+
 ## Rolling update
 
 Within every pipeline build, a new docker image is pushed to Docker Hub, this new image is then used in the cluster via kubesctl.
